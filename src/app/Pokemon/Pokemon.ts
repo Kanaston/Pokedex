@@ -1,50 +1,85 @@
-import { ChangeDetectionStrategy, Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { PokemonService } from '../pokemon.service';
+import { ChangeDetectionStrategy, Component, OnInit, signal } from '@angular/core';
+import { PokemonService, PokemonListItem, PokemonDetail } from '../pokemon.service';
+import { PokeInfo } from '../Poke-info/Poke-info';
 
 @Component({
   selector: 'app-pokemon',
-  imports: [],
+  imports: [PokeInfo],
   template: `
-      <hr>
-      <input #nombrePokemon type="text" (keyup.enter)="buscar(nombrePokemon.value)" placeholder="Ingrese el nombre del Pokémon">
+    <div class="buscador">
+      <input
+        #nombrePokemon
+        type="text"
+        (keyup.enter)="buscar(nombrePokemon.value)"
+        placeholder="Buscar por nombre o número"
+      />
       <button type="button" (click)="buscar(nombrePokemon.value)">Buscar</button>
-      <hr>
-      @if (pokemonData) {
-        <div>
-          <img [src]="pokemonData.sprites.front_default">
-          <p>Nombre: {{pokemonData.name}}</p>
-          <p>Tipo: {{pokemonData.types[0].type.name}}</p>
-          <p>Habilidad: {{pokemonData.abilities[0].ability.name}}</p>
+    </div>
+
+    @if (errorMsg()) {
+      <p class="error">{{ errorMsg() }}</p>
+    }
+
+    @if (loading()) {
+      <p class="cargando">Cargando...</p>
+    }
+
+    <div class="grid">
+      @for (poke of pokemonList(); track poke.id) {
+        <div class="card" (click)="seleccionar(poke.id)">
+          <img [src]="poke.sprite" [alt]="poke.name" loading="lazy" />
+          <p>#{{ poke.id }} {{ poke.name }}</p>
         </div>
       }
+    </div>
+
+    @if (selectedPokemon()) {
+      <app-poke-info [pokemon]="selectedPokemon()!" (cerrar)="cerrarModal()"></app-poke-info>
+    }
   `,
   styleUrl: './Pokemon.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Pokemon implements OnInit { 
-  pokemonData: any;
+export class Pokemon implements OnInit {
+  pokemonList = signal<PokemonListItem[]>([]);
+  selectedPokemon = signal<PokemonDetail | null>(null);
+  loading = signal(false);
+  errorMsg = signal('');
 
-  constructor(
-    private pokemonSvc: PokemonService,
-    private cdr: ChangeDetectorRef
-  ) {}
+  constructor(private pokemonSvc: PokemonService) {}
 
   ngOnInit() {
-    this.buscar('1');
+    this.loading.set(true);
+    this.pokemonSvc.getPokemonList(151).subscribe({
+      next: lista => {
+        this.pokemonList.set(lista);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.errorMsg.set('No se pudo cargar la lista de Pokémon.');
+        this.loading.set(false);
+      },
+    });
+  }
+
+  seleccionar(id: number) {
+    this.errorMsg.set('');
+    this.pokemonSvc.getPokemon(id).subscribe({
+      next: detalle => this.selectedPokemon.set(detalle),
+      error: () => this.errorMsg.set('No se pudo cargar el detalle del Pokémon.'),
+    });
   }
 
   buscar(nombre: string) {
     if (!nombre) return;
-    const nombreLimpio = nombre.toLowerCase().trim();
-    this.pokemonSvc.getPokemon(nombreLimpio).subscribe({
-      next: res => { 
-        console.log(this.pokemonData);
-        this.pokemonData = res;
-        this.cdr.detectChanges();
-      },
-      error: err => {
-        alert('Error al obtener el Pokémon. Asegúrate de ingresar un nombre válido.');
-      }
+    this.errorMsg.set('');
+    this.pokemonSvc.getPokemon(nombre).subscribe({
+      next: detalle => this.selectedPokemon.set(detalle),
+      error: () => this.errorMsg.set('Pokémon no encontrado. Verifica el nombre o número.'),
     });
+  }
+
+  cerrarModal() {
+    this.selectedPokemon.set(null);
   }
 }

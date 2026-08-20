@@ -1,3 +1,107 @@
 :host {
   display: block;
 }
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 12, 18, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 1000;
+}
+
+.modal {
+  background: #1d2230;
+  border: 1px solid #2a2f3d;
+  border-radius: 16px;
+  padding: 1.75rem;
+  width: 100%;
+  max-width: 420px;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  text-align: center;
+  color: #f5f1e8;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.cerrar {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: #2a2f3d;
+  color: #f5f1e8;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.cerrar:hover {
+  background: #d64045;
+}
+
+.modal img {
+  width: 160px;
+  height: 160px;
+  object-fit: contain;
+}
+
+.modal h2 {
+  text-transform: capitalize;
+  margin: 0.25rem 0;
+}
+
+.descripcion {
+  font-style: italic;
+  color: #b7bfd1;
+  font-size: 0.9rem;
+}
+
+.tipos {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin: 0.9rem 0;
+}
+
+.tipo {
+  background: #d64045;
+  color: white;
+  padding: 0.25rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  text-transform: capitalize;
+  font-weight: 600;
+}
+
+.modal h3 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #9aa3b8;
+  margin: 1.1rem 0 0.4rem;
+  text-align: left;
+}
+
+.modal ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-transform: capitalize;
+  text-align: left;
+}
+
+.stats li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid #2a2f3d;
+  font-size: 0.9rem;
+}

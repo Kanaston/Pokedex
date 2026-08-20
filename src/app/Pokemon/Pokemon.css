@@ -1,3 +1,91 @@
 :host {
   display: block;
 }
+
+.buscador {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 2rem;
+  background: #1a2e22;
+  border: 2px solid #3ea24f;
+  border-radius: 10px;
+  padding: 0.6rem;
+  box-shadow: 0 0 0 4px rgba(62, 162, 79, 0.08);
+}
+
+.buscador input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #d7f5dd;
+  font-size: 0.95rem;
+  padding: 0.4rem 0.6rem;
+  outline: none;
+}
+
+.buscador input::placeholder {
+  color: #6f9b78;
+}
+
+.buscador button {
+  padding: 0.5rem 1.25rem;
+  border: none;
+  border-radius: 6px;
+  background: #d64045;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.buscador button:hover {
+  background: #b8333a;
+}
+
+.error {
+  color: #ff8a80;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.cargando {
+  color: #9aa3b8;
+  margin-bottom: 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  background: #1d2230;
+  border: 1px solid #2a2f3d;
+  border-radius: 12px;
+  padding: 0.9rem 0.6rem 0.7rem;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: #d64045;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+}
+
+.card img {
+  width: 84px;
+  height: 84px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.card p {
+  margin: 0.5rem 0 0;
+  color: #f5f1e8;
+  text-transform: capitalize;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
