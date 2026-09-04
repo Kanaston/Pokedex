@@ -1,10 +1,11 @@
 # PokeDex 🎮
 
-Aplicación web hecha en **Angular** que muestra los primeros 151 Pokémon (generación 1) en una cuadrícula. Al hacer click en cualquiera, se abre una ventana modal con su información: foto, descripción tipo Pokédex, tipos, habilidades y estadísticas — sin salir de la pantalla ni navegar a otra ruta. También incluye un buscador para encontrar directamente un Pokémon por nombre o número.
+Aplicación web hecha en Angular que muestra el Pokédex nacional completo (1,025 Pokémon, del #1 al #1025) organizado por región/generación. Al hacer click en cualquiera, se abre una ventana modal con su información: foto, descripción tipo Pokédex, tipos, habilidades y estadísticas — sin salir de la pantalla ni navegar a otra ruta. También incluye un buscador para encontrar directamente un Pokémon por nombre o número, sin importar su generación.
 
 ## ✨ Características
 
-- Cuadrícula con los 151 Pokémon originales, cargados de forma eficiente.
+- Selector de región (Kanto, Johto, Hoenn, Sinnoh, Teselia, Kalos, Alola, Galar, Paldea) para navegar el Pokédex nacional por partes, en  vez de cargar los 1,025 Pokémon de golpe.
+- Cuadrícula con los Pokémon de la generación activa, cargados de forma eficiente (sin hacer una petición por cada sprite).
 - Modal de detalle con:
   - Imagen oficial del Pokémon.
   - Descripción de la Pokédex (en español, con respaldo en inglés si no está disponible).
@@ -61,7 +62,7 @@ ng test
 ```
 src/
 ├── app/
-│   ├── Pokemon/           # Cuadrícula de los 151 Pokémon + buscador
+│   ├── Pokemon/           # Cuadrícula por generación + buscador
 │   │   ├── Pokemon.ts
 │   │   └── Pokemon.css
 │   ├── Poke-info/         # Modal con el detalle del Pokémon seleccionado
@@ -77,14 +78,14 @@ src/
 
 Este proyecto consume la [PokéAPI](https://pokeapi.co/docs/v2), una API pública y gratuita con datos de todos los Pokémon.
 
-- `GET /pokemon?limit=151` — lista base de los primeros 151 Pokémon.
+- `GET /pokemon?offset={n}&limit={n}` — lista base de los Pokémon de la región/generación seleccionada.
 - `GET /pokemon/{id o nombre}` — detalle (sprites, tipos, habilidades, stats).
 - `GET /pokemon-species/{id o nombre}` — descripción tipo Pokédex.
 
 ## 📌 Próximas mejoras
 
 - [ ] Filtrar la cuadrícula por tipo de Pokémon.
-- [ ] Paginación o scroll infinito para incluir más generaciones.
+- [ ] Mejorar el diseño visual del selector de regiones y del modal de detalle.
 - [ ] Guardar Pokémon favoritos.
 
 ## 📄 Licencia

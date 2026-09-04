@@ -42,6 +42,37 @@
   background: #b8333a;
 }
 
+
+.generaciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.generaciones button {
+  padding: 0.4rem 0.9rem;
+  border: 1px solid #2a2f3d;
+  border-radius: 999px;
+  background: #1d2230;
+  color: #b7bfd1;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.generaciones button:hover {
+  border-color: #d64045;
+  color: #f5f1e8;
+}
+
+.generaciones button.activo {
+  background: #d64045;
+  border-color: #d64045;
+  color: #fff;
+}
+
 .error {
   color: #ff8a80;
   font-weight: 600;

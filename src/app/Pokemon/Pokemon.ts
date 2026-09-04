@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, signal } from '@angular/core';
-import { PokemonService, PokemonListItem, PokemonDetail } from '../pokemon.service';
+import { PokemonService, PokemonListItem, PokemonDetail, GENERATIONS, Generation } from '../pokemon.service';
 import { PokeInfo } from '../Poke-info/Poke-info';
 
 @Component({
@@ -15,6 +15,18 @@ import { PokeInfo } from '../Poke-info/Poke-info';
       />
       <button type="button" (click)="buscar(nombrePokemon.value)">Buscar</button>
     </div>
+
+    <div class="generaciones">
+      @for (gen of generaciones; track gen.id) {
+        <button
+          type="button"
+          [class.activo]="gen.id === generacionActual().id"
+          (click)="cargarGeneracion(gen)"
+        >
+          {{ gen.region }}
+        </button>
+      }
+    </div>  
 
     @if (errorMsg()) {
       <p class="error">{{ errorMsg() }}</p>
@@ -40,7 +52,12 @@ import { PokeInfo } from '../Poke-info/Poke-info';
   styleUrl: './Pokemon.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+
+
 export class Pokemon implements OnInit {
+  generaciones = GENERATIONS;
+  generacionActual = signal<Generation>(GENERATIONS[0]);
+
   pokemonList = signal<PokemonListItem[]>([]);
   selectedPokemon = signal<PokemonDetail | null>(null);
   loading = signal(false);
@@ -49,18 +66,25 @@ export class Pokemon implements OnInit {
   constructor(private pokemonSvc: PokemonService) {}
 
   ngOnInit() {
+    this.cargarGeneracion(GENERATIONS[0]);
+  }
+ 
+  cargarGeneracion(gen: Generation) {
+    this.generacionActual.set(gen);
+    this.errorMsg.set('');
     this.loading.set(true);
-    this.pokemonSvc.getPokemonList(151).subscribe({
+    this.pokemonSvc.getPokemonRange(gen.start, gen.end).subscribe({
       next: lista => {
         this.pokemonList.set(lista);
         this.loading.set(false);
       },
       error: () => {
-        this.errorMsg.set('No se pudo cargar la lista de Pokémon.');
+        this.errorMsg.set('No se pudo cargar esta generación.');
         this.loading.set(false);
       },
     });
   }
+
 
   seleccionar(id: number) {
     this.errorMsg.set('');
